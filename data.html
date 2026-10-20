@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive Data Table</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="data.html">Studio Data</a>
+</header>
+<main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+  <section class="section">
+    <h1>Users Directory</h1>
+    
+    <!-- أدوات البحث والترتيب -->
+    <div class="row" style="margin-bottom: 20px; gap: 10px;">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search by name or city..." style="max-width: 300px;">
+      <button class="btn" id="sortNameBtn">Sort by Name</button>
+      <button class="btn" id="sortAgeBtn">Sort by Age</button>
+    </div>
+
+    <!-- الجدول -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>City</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- سيتم تعبئة البيانات عبر الـ JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+  // مصفوفة الكائنات (Array of Objects)
+  let users = [
+    { name: 'Alice Smith', age: 28, city: 'New York' },
+    { name: 'Bob Johnson', age: 34, city: 'London' },
+    { name: 'Charlie Brown', age: 22, city: 'Paris' },
+    { name: 'Diana Prince', age: 29, city: 'Berlin' },
+    { name: 'Ethan Hunt', age: 41, city: 'Tokyo' }
+  ];
+
+  const tableBody = document.getElementById('tableBody');
+  const searchInput = document.getElementById('searchInput');
+  const sortNameBtn = document.getElementById('sortNameBtn');
+  const sortAgeBtn = document.getElementById('sortAgeBtn');
+
+  // دالة عرض البيانات في الجدول
+  function renderTable(data) {
+    tableBody.innerHTML = '';
+    if (data.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No results found</td></tr>`;
+      return;
+    }
+    data.forEach(user => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${user.name}</td>
+        <td>${user.age}</td>
+        <td>${user.city}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  // عرض الجدول لأول مرة
+  renderTable(users);
+
+  // ميزة البحث الفوري أثناء الكتابة (بدون زر)
+  searchInput.addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    const filteredUsers = users.filter(user => 
+      user.name.toLowerCase().includes(term) || user.city.toLowerCase().includes(term)
+    );
+    renderTable(filteredUsers);
+  });
+
+  // زر الترتيب حسب الاسم
+  let nameAsc = true;
+  sortNameBtn.addEventListener('click', function() {
+    users.sort((a, b) => nameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+    nameAsc = !nameAsc;
+    renderTable(users);
+  });
+
+  // زر الترتيب حسب العمر
+  let ageAsc = true;
+  sortAgeBtn.addEventListener('click', function() {
+    users.sort((a, b) => ageAsc ? a.age - b.age : b.age - a.age);
+    ageAsc = !ageAsc;
+    renderTable(users);
+  });
+</script>
+</body>
+</html>

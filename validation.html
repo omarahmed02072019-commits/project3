@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registration Form Validation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="logo" href="validation.html">Studio Form</a>
+</header>
+<main class="container" style="max-width: 500px; margin-top: 40px; margin-bottom: 40px;">
+  <div class="card">
+    <h2>Register</h2>
+    <form id="regForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" class="form-control" placeholder="Enter your name">
+        <div class="error-msg" id="nameError" style="color: #991b1b; font-size: 0.85rem; margin-top: 4px;"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" class="form-control" placeholder="name@example.com">
+        <div class="error-msg" id="emailError" style="color: #991b1b; font-size: 0.85rem; margin-top: 4px;"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="At least 8 characters">
+        <div class="error-msg" id="passwordError" style="color: #991b1b; font-size: 0.85rem; margin-top: 4px;"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password">
+        <div class="error-msg" id="confirmError" style="color: #991b1b; font-size: 0.85rem; margin-top: 4px;"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" class="form-control" placeholder="Enter your age">
+        <div class="error-msg" id="ageError" style="color: #991b1b; font-size: 0.85rem; margin-top: 4px;"></div>
+      </div>
+
+      <button type="submit" class="btn" style="width: 100%;">Submit</button>
+    </form>
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('regForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const confirmInput = document.getElementById('confirmPassword');
+  const ageInput = document.getElementById('age');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault(); // منع الإرسال الافتراضي للفورم للتأكد من صحة البيانات
+    let isValid = true;
+
+    // التحقق من الاسم
+    if (nameInput.value.trim() === '') {
+      document.getElementById('nameError').textContent = 'Name is required.';
+      isValid = false;
+    } else {
+      document.getElementById('nameError').textContent = '';
+    }
+
+    // التحقق من البريد الإلكتروني
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!emailInput.value.match(emailPattern)) {
+      document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+      isValid = false;
+    } else {
+      document.getElementById('emailError').textContent = '';
+    }
+
+    // التحقق من كلمة المرور (8 أحرف على الأقل)
+    if (passwordInput.value.length < 8) {
+      document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.';
+      isValid = false;
+    } else {
+      document.getElementById('passwordError').textContent = '';
+    }
+
+    // التحقق من تطابق كلمات المرور
+    if (confirmInput.value !== passwordInput.value || confirmInput.value === '') {
+      document.getElementById('confirmError').textContent = 'Passwords do not match.';
+      isValid = false;
+    } else {
+      document.getElementById('confirmError').textContent = '';
+    }
+
+    // التحقق من العمر
+    if (ageInput.value === '' || ageInput.value < 1) {
+      document.getElementById('ageError').textContent = 'Please enter a valid age.';
+      isValid = false;
+    } else {
+      document.getElementById('ageError').textContent = '';
+    }
+
+    // إذا كانت كل الحقول صالحة يتم إرسال أو قبول الفورم
+    if (isValid) {
+      alert('Form submitted successfully!');
+      form.reset();
+    }
+  });
+</script>
+</body>
+</html>
